@@ -7,15 +7,18 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { colors } from "../config";
+import { FilterContext } from "../context/filterContext";
 
-const FilterModel = ({ ModalVisible, setModalVisible }) => {
+const FilterModel = ({ ModalVisible, setModalVisible ,setFilterType}) => {
   const radioIcon = require("../assets/images/dashboard/radio.png");
   const radioActiveIcon = require("../assets/images/dashboard/radio_Active.png");
 
-  const Options = ["Male", "Female", "Other"];
+  const Options = ["Male", "Female", "All"];
   const [selectedOption, setSelectedOption] = useState("Male");
+  const {setFilter}= useContext(FilterContext)
+  
   return (
     <Modal
       style={styles.Modal}
@@ -67,7 +70,9 @@ const FilterModel = ({ ModalVisible, setModalVisible }) => {
             <Pressable style={styles.filterBtn}>
               <Text
                 style={styles.filterBtnText}
-                onPress={() => setModalVisible(!ModalVisible)}
+                onPress={() => {
+                  setFilter(selectedOption)
+                  setModalVisible(!ModalVisible)}}
               >
                 Submit
               </Text>

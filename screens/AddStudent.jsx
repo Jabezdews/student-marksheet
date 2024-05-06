@@ -19,16 +19,16 @@ import axios from "axios";
 const Back = require("../assets/images/add-student/Backarrow_icon.png");
 const AddStudent = ({ navigation }) => {
   const initialFormState = {
-    Name: "jab",
-    Email: "jab@gmail.ocm",
-    "Phone Number": "5655566555",
-    Gender: "Male",
-    Standard: "10",
-    "Mark 1": "33",
-    "Mark 2": "55",
-    "Mark 3": "66",
-    "Mark 4": "88",
-    "Mark 5": "99",
+    Name: "",
+    Email: "",
+    "Phone Number": "",
+    Gender: "",
+    Standard: "",
+    "Mark 1": "",
+    "Mark 2": "",
+    "Mark 3": "",
+    "Mark 4": "",
+    "Mark 5": "",
   };
   const [ModalVisible, setModalVisible] = useState(false);
   const [formVal, SetFormVal] = useState(initialFormState);
@@ -84,7 +84,7 @@ const AddStudent = ({ navigation }) => {
     SetValid(true);
   };
   useEffect(() => {
-    if (Object.keys(formErr).length === 0 && isValid) {
+    if (Object.keys(formErr)?.length === 0 && isValid) {
       SetFormErr({});
       SetValid(false);
       SetFormVal(initialFormState);
@@ -121,6 +121,38 @@ const AddStudent = ({ navigation }) => {
 
   const Validate = () => {
     let err = {};
+
+
+    const regexValid = [
+      /^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$/,
+      /^[6-9]\d{9}$/,
+    ];
+    const regexField = ["Email", "Phone Number"];
+    let marks = ["Mark 1", "Mark 2", "Mark 3", "Mark 4", "Mark 5"];
+    // console.log(formstate);
+    if (formVal.Name.length < 4 || formVal.Name.length > 12) {
+      err.Name = "*Name must be between 4 and 12 characters";
+    }
+    regexField.forEach((item, i) => {
+      if (!regexValid[i].test(formVal?.[item])) {
+        err[item] = `*Please enter a valid ${item}`;
+      }
+    });
+    Object.keys(formVal).forEach((item, i) => {
+      // console.log(formVal?.[item]);
+      if (formVal?.[item]?.trim() === "" && item !== "comments") {
+        // console.log(item);
+        err[item] = `*${item} Field is Required`;
+      }
+    });
+
+    marks.forEach((item, i) => {
+      // console.log(formVal?.[item]);
+      if (Number(formVal?.[item]) < 0 || Number(formVal?.[item]) > 100) {
+        err[item] = `*This ${item} must be a valid mark between 0 and 100`;
+      }
+    });
+
     Object.keys(formVal).forEach((key) => {
       console.log(key);
       if (formVal[key] === "") {

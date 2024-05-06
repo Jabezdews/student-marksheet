@@ -1,9 +1,10 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Nav from "../components/Nav";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FilterModel from "../components/FilterModel";
 import { colors } from "../config";
 import SubStack from "../stack/SubStack";
+import { FilterContext } from "../context/filterContext";
 
 export default Home = ({ navigation }) => {
   const filter = require("../assets/images/dashboard/Filter_icon.png");
@@ -11,6 +12,7 @@ export default Home = ({ navigation }) => {
   const TabBtns = ["All", "List All", "List"];
   const [TabActive, SetTabActive] = useState("All");
   const [ModalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={[Styles.DashboardContainer]}>
       <Nav />
@@ -75,7 +77,6 @@ export default Home = ({ navigation }) => {
           <Text>List</Text>
         </Pressable> */}
       </View>
-
       <SubStack />
       <FilterModel
         ModalVisible={ModalVisible}

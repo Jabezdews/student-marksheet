@@ -1,4 +1,11 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { BASE_URL, colors } from "../../config";
 import axios from "axios";
@@ -17,14 +24,16 @@ const ListAll = () => {
     "Mark 4",
     "Mark 5",
   ];
-  console.log(BASE_URL,29);
+  console.log(BASE_URL, 29);
   const [StudentData, SetStudentData] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(`${BASE_URL}/Students`)
       .then((res) => {
         console.log(res.data.data);
         SetStudentData(res?.data?.data);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -52,43 +61,71 @@ const ListAll = () => {
                 <Text style={[styles.w100, styles.TheadTdBox]}>Mark 4</Text>
                 <Text style={[styles.w100, styles.TheadTdBox]}>Mark 5</Text>
               </View>
-              {StudentData?.map((item, i) => (
-                <View style={styles.TableHeadRow} key={i}>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item.id}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item.Name}
-                  </Text>
-                  <Text style={[styles.w200, styles.TBodyTdBox]}>
-                    {item.Email}
-                  </Text>
-                  <Text style={[styles.w200, styles.TBodyTdBox]}>
-                    {item?.["Phone Number"]}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item.Standard}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item.Gender}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item?.["Mark 1"]}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item?.["Mark 2"]}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item?.["Mark 3"]}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item?.["Mark 4"]}
-                  </Text>
-                  <Text style={[styles.w100, styles.TBodyTdBox]}>
-                    {item?.["Mark 5"]}
-                  </Text>
-                </View>
-              ))}
+              {loading && (
+                <ActivityIndicator
+                  animating={true}
+                  size="large"
+                  color="#000000"
+                />
+              )}
+              {StudentData && (
+                <FlatList
+                  data={StudentData}
+                  renderItem={({ item }) => (
+                    <View style={styles.TableHeadRow}>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item.id}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item.Name}
+                      </Text>
+                      <Text style={[styles.w200, styles.TBodyTdBox]}>
+                        {item.Email}
+                      </Text>
+                      <Text style={[styles.w200, styles.TBodyTdBox]}>
+                        {item?.["Phone Number"]}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item.Gender}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item.Standard}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item?.["Mark 1"]}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item?.["Mark 2"]}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item?.["Mark 3"]}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item?.["Mark 4"]}
+                      </Text>
+                      <Text style={[styles.w100, styles.TBodyTdBox]}>
+                        {item?.["Mark 5"]}
+                      </Text>
+                    </View>
+                  )}
+                  keyExtractor={(item) => item.id}
+                  ListEmptyComponent={
+                    loading ? (
+                      <ActivityIndicator
+                        animating={true}
+                        size="small"
+                        color="#0000ff"
+                      />
+                    ) : (
+                      <View>
+                        <Text style={{ textAlign: "center" }}>
+                          No Data Found
+                        </Text>
+                      </View>
+                    )
+                  }
+                />
+              )}
             </View>
           </ScrollView>
         </View>

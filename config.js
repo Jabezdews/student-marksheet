@@ -22,4 +22,4 @@ export const fs = () => {
   const fontScale = Dimensions.get("screen").fontScale;
 
 };
-export const BASE_URL = 'http://192.168.1.10:3001/api/v1';
+export const BASE_URL = 'https://marksheet-management.onrender.com/api/v1';

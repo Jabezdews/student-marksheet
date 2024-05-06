@@ -35,8 +35,8 @@ function Login({navigation}) {
   useEffect(() => {
     if (Object.keys(formErr).length === 0 && isValid) {
       SetFormErr({})
-      SetValid(false);
       navigation.navigate('Dashboard')
+      SetValid(false);
     }
   }, [isValid]);
 
